@@ -1,0 +1,23 @@
+.map-container-6 {
+  overflow:hidden;
+  padding-bottom:56.25%;
+  position:relative;
+  height:0;
+}
+.map-container-6 iframe {
+  left:0;
+  top:0;
+  height:100%;
+  width:100%;
+  position:absolute;
+}
+
+.col-lg-5 {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.col-lg-7 {
+  padding-left: 30px;
+  padding-right: 30px;
+}
