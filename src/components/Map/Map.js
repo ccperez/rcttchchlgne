@@ -10,20 +10,20 @@ export default class Map extends Component {
 
   componentDidMount() {
     const routePath = window.$routePath;
-
+    // show map when it has routePath
     if (routePath) {
       const google = window.google = window.google ? window.google : {}
       const directionsService = new google.maps.DirectionsService();
-
+      // assign routePath to waypoints
       const waypoints = routePath.map(path => ({
         location: {lat: path.latitude, lng: path.longitude},
         stopover: true
       }));
-
+      // capture origin and destination
       const origin = waypoints.pop().location;
       const destination = waypoints.shift().location;
       this.setState({ defaultLatLng: origin })
-
+      // called the directionsService
       directionsService.route(
         {
           origin: origin,
@@ -41,10 +41,10 @@ export default class Map extends Component {
   }
 
   render() {
-    const routePath = window.$routePath;
     const { defaultLatLng, directions } = this.state;
     const hongkongLatLng = {lat: 22.3193, lng: 114.1694};
-    const defaultCenter = routePath ? defaultLatLng : hongkongLatLng;
+    // set default hongkongLatLng when no directions
+    const defaultCenter = directions ? defaultLatLng : hongkongLatLng;
 
     const GoogleMapExample = withGoogleMap(props => (
       <GoogleMap defaultZoom = {8} defaultCenter = {defaultCenter}>
