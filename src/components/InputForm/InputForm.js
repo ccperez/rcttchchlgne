@@ -17,7 +17,8 @@ export default class InputForm extends React.Component {
     return {
       data: { origin: '', destination: '' },
       total: { distance: '', time: '' },
-      loading: false, errors: {}
+      loading: false, errors: {},
+      inProcessCount: 0
     }
   }
 
@@ -60,8 +61,12 @@ export default class InputForm extends React.Component {
     api.getRoute(token).then(res => {
         console.log(res.data.status, res.data)
         const { status, error, path, total_distance, total_time } = res.data
-        if (status === 'in progress') {
+        let processCount  = this.state.inProcessCount;
+        if (status === 'in progress' && processCount < 4) {
+            this.setState({ inProcessCount : processCount + 1 });
             this.getRoute(token);
+        } else if (status === 'in progress' && processCount === 3) {
+            this.setState({ errors: { global: 'Still Busy.  Please try again later'} });
         } else {
           if (status === 'failure') {
             this.setState({ errors: { global: error } })
@@ -153,7 +158,7 @@ export default class InputForm extends React.Component {
             {/* Load Map only when success and iframe Map if not success to avoid to much use of google API key */}
             {(!loading && total['distance'])
               ? <MapLoader
-                  googleMapURL   = { REACT_APP_GOOGLEMAPURL+REACT_APP_GMAPIKEY }
+                  googleMapURL   = {REACT_APP_GOOGLEMAPURL+'&key='+REACT_APP_GMAPIKEY}
                   loadingElement = {<div style={{height: `100%`, width: `100%`}} />}
                 />
               : <iframe

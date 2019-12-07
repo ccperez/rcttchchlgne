@@ -20,8 +20,8 @@ export default class Map extends Component {
         stopover: true
       }));
       // capture origin and destination
-      const origin = waypoints.pop().location;
-      const destination = waypoints.shift().location;
+      const origin = waypoints.shift().location;
+      const destination = waypoints.pop().location;
       this.setState({ defaultLatLng: origin })
       // called the directionsService
       directionsService.route(
